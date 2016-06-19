@@ -14,7 +14,7 @@ from mysite.settings                import IS_CLUB
 def advert_display(request):
   activeuser                              =  User.objects.get(id=request.user.id)
   activeperson                            =  Person.objects.get(username=activeuser.username)
-  return render(request, 'mysite/advert_display.html', { 'activeperson': activeperson, 'IS_CLUB': IS_CLUB})
+  return render(request, 'sitesettings/advert_display.html', { 'activeperson': activeperson, 'IS_CLUB': IS_CLUB})
 
 # functions which update the database in two stages,  using forms
 # but don't require a pk as they don't refer to an existing record
@@ -26,7 +26,7 @@ def advert_insert(request):
   if request.method                     != "POST": # i.e. method == "GET":
     if activeperson.status             >= 60:
       form = InsertAdvertForm()                                               # get a blank InsertPersonForm
-      return render(request, 'mysite/advert_new.html', {'form': form})
+      return render(request, 'sitesettings/advert_new.html', {'form': form})
     else:
       return redirect('events.views.event_list')
   else:                                 # i.e method == 'POST'
@@ -49,7 +49,7 @@ def siteadmin_detail(request):
 
   if request.method                     != "POST": # i.e. method == "GET":
     form = UpdateAdvertForm(instance=sitesettings)                                # get a UpdatePersonForm filled with details of Profile to be upd
-    return render(request, 'mysite/siteadmin_detail.html', {'form': form, 'sitesettings': sitesettings})                # ask activeuser for details of new/updated user
+    return render(request, 'sitesettings/siteadmin_detail.html', {'form': form, 'sitesettings': sitesettings})                # ask activeuser for details of new/updated user
   else:                                 # i.e method == 'POST'
     form                                = UpdateAdvertForm(request.POST, instance=sitesettings)
     if form.is_valid()\
@@ -58,7 +58,7 @@ def siteadmin_detail(request):
       sitesettings.save()                                                                   # update user record with extra details
       return redirect('users.views.member_list')
     else:                                                                        # i.e. form is not valid, ask activeuser to resubmit it
-      return render(request, 'mysite/siteadmin_detail.html', {'form': form, 'sitesettings': sitesettings})
+      return render(request, 'sitesettings/siteadmin_detail.html', {'form': form, 'sitesettings': sitesettings})
 
 
 
